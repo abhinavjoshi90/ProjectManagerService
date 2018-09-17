@@ -40,8 +40,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="IProjectManagerBL.cs" />
+    <Compile Include="Model\TaskModel.cs" />
+    <Compile Include="ProjectManagerBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProjectManager.DL\ProjectManager.DL.csproj">
+      <Project>{23BC9CC4-92D7-492E-8FF5-69D3CF5C8BED}</Project>
+      <Name>ProjectManager.DL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

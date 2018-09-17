@@ -50,9 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="IProjectDbService.cs" />
     <Compile Include="ProjectDbContext.cs" />
     <Compile Include="ParentTask.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="ProjectDbService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Task.cs" />
     <Compile Include="Usr.cs" />
