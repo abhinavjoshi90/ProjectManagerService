@@ -1,0 +1,13 @@
+﻿
+
+
+create table ParentTask(Parent_ID int primary key identity(100,1),Parent_Task varchar(50));
+
+create table Project(Project_ID int primary key identity(200,1),Project_Name varchar(50),StartDate date,EndDate date,Priority int);
+
+create table Task(Task_ID int primary key identity(300,1),Parent_ID int references ParentTask(Parent_ID),
+                  Project_ID int references Project(Project_ID),Task_Name varchar(50),StartDate date,
+				  EndDate date,Priority int,Status varchar(20));
+
+create table Usr(Usr_ID int primary key identity (400,1),FirstName varchar(50),LastName varchar(50),
+                  Employee_ID int,Project_ID int references Project(Project_ID),Task_ID int references Task(Task_ID));
