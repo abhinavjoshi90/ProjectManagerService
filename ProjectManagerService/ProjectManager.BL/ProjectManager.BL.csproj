@@ -41,7 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IProjectManagerBL.cs" />
+    <Compile Include="Model\ProjectModel.cs" />
     <Compile Include="Model\TaskModel.cs" />
+    <Compile Include="Model\UserModel.cs" />
     <Compile Include="ProjectManagerBL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

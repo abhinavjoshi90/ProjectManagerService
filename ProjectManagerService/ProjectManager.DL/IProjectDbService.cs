@@ -6,5 +6,7 @@ namespace ProjectManager.DL
     {
         IQueryable<Task> GetAllTasks();
         IQueryable<Usr> GetAllUsers();
+        IQueryable<Project> GetAllProjects();
+         void AddUser(Usr obj);
     }
 }

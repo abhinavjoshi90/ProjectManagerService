@@ -32,5 +32,38 @@ namespace ProjectManager.BL
 
             return allTasks.ToList();
         }
+
+        public IEnumerable<ProjectModel> GetAllProjects()
+        {
+            var allProjects = from item in _dbService.GetAllProjects()
+                              select new ProjectModel
+                              {
+                                  ProjectID = item.Project_ID,
+                                  ProjectName = item.Project_Name,
+                                  NoOfTasks = item.Tasks.Count,
+                                  CompletedTasks = item.Tasks.Where(c => c.Status == "Completed").Count(),
+                                  StartDate = item.StartDate,
+                                  EndDate = item.EndDate,
+                                  Priority = item.Priority
+                              };
+            return allProjects.ToList();
+        }
+
+        public IEnumerable<UserModel> GetAllUsers()
+        {
+            var allUsers = from item in _dbService.GetAllUsers()
+                           select new UserModel
+                           {
+                               FirstName = item.FirstName,
+                               LastName = item.LastName,
+                               EmployeeId = item.Employee_ID
+                           };
+            return allUsers.Distinct().ToList();
+        }
+
+        public void AddUser(UserModel usr)
+        {
+            _dbService.AddUser(new Usr() { Employee_ID = usr.EmployeeId, FirstName = usr.FirstName, LastName = usr.LastName });
+        }
     }
 }

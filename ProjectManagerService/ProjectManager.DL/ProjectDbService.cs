@@ -18,5 +18,15 @@ namespace ProjectManager.DL
         {
             return _context.Usrs;
         }
+
+        public IQueryable<Project> GetAllProjects()
+        {
+            return _context.Projects;
+        }
+        public void AddUser(Usr obj)
+        {
+            _context.Usrs.Add(obj);
+            _context.SaveChanges();
+        }
     }
 }

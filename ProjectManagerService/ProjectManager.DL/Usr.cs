@@ -18,7 +18,7 @@ namespace ProjectManager.DL
         [StringLength(50)]
         public string LastName { get; set; }
 
-        public int? Employee_ID { get; set; }
+        public int Employee_ID { get; set; }
 
         public int? Project_ID { get; set; }
 
