@@ -11,5 +11,6 @@ namespace ProjectManager.BL
         void AddUser(UserModel usr);
         void AddProject(ProjectModel prj);
         void AddTask(TaskModel task);
+        TaskModel GetTaskById(int taskId);
     }
 }

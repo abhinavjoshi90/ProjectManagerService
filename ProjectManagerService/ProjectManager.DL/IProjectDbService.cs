@@ -11,5 +11,6 @@ namespace ProjectManager.DL
         void AddProject(Project prj);
         IQueryable<ParentTask> GetAllParentTasks();
         void AddTask(Task task);
+        Task GetTaskById(int taskId);
     }
 }

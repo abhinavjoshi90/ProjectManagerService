@@ -46,17 +46,39 @@ namespace ProjectManager.Service.Controllers
         [HttpPost]
         public IHttpActionResult AddProject(ProjectModel project)
         {
-            _manager.AddProject(project);
-            return Ok("Project added succesfully");
+            if (project.ProjectID > 0)
+            {
+                _manager.AddProject(project);
+                return Ok("Project updated succesfully");
+            }
+            else
+            {
+                _manager.AddProject(project);
+                return Ok("Project added succesfully");
+            }
         }
 
         [Route("addtask")]
         [HttpPost]
         public IHttpActionResult AddTask(TaskModel task)
         {
-            _manager.AddTask(task);
-            return Ok("Task added succesfully");
+            if (task.TaskID > 0)
+            {
+                _manager.AddTask(task);
+                return Ok("Task updated succesfully");
+            }
+            else
+            {
+                _manager.AddTask(task);
+                return Ok("Task added succesfully");
+            }
         }
 
+        [Route("gettaskbyid/{id}")]
+        [HttpGet]
+        public IHttpActionResult GetTaskByID(int id)
+        {
+            return Json<TaskModel>(_manager.GetTaskById(id));
+        }
     }
 }
