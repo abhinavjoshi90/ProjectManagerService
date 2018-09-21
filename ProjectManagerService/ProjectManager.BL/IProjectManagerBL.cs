@@ -9,5 +9,7 @@ namespace ProjectManager.BL
         IEnumerable<ProjectModel> GetAllProjects();
         IEnumerable<UserModel> GetAllUsers();
         void AddUser(UserModel usr);
+        void AddProject(ProjectModel prj);
+        void AddTask(TaskModel task);
     }
 }

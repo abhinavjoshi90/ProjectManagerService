@@ -15,5 +15,7 @@ namespace ProjectManager.BL.Model
         public int? Priority { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
+        public ProjectModel Project { get; set; }
+        public UserModel User { get; set; }
     }
 }

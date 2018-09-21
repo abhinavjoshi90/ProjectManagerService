@@ -41,6 +41,22 @@ namespace ProjectManager.Service.Controllers
             _manager.AddUser(usr);
             return Ok("User added successfully");
         }
-       
+
+        [Route("addproject")]
+        [HttpPost]
+        public IHttpActionResult AddProject(ProjectModel project)
+        {
+            _manager.AddProject(project);
+            return Ok("Project added succesfully");
+        }
+
+        [Route("addtask")]
+        [HttpPost]
+        public IHttpActionResult AddTask(TaskModel task)
+        {
+            _manager.AddTask(task);
+            return Ok("Task added succesfully");
+        }
+
     }
 }
