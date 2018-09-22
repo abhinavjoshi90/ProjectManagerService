@@ -23,14 +23,21 @@ namespace ProjectManager.BL
                            {
                                TaskID = item.Task_ID,
                                TaskName = item.Task_Name,
-                               ParentTaskName = item.ParentTask.Parent_Task,
-                               ParentTaskID = item.ParentTask.Parent_ID,
+                               ParentTaskName = item.ParentTask == null ? null : item.ParentTask.Parent_Task,
+                               ParentTaskID = item.Parent_ID, //.ParentTask?.Parent_ID,
                                StartDate = item.StartDate,
                                EndDate = item.EndDate,
-                               Priority = item.Priority
+                               Priority = item.Priority,
+                               IsParentTask = false,
+                               Project = new ProjectModel()
+                               {
+                                   ProjectID = item.Project.Project_ID,
+                                   ProjectName = item.Project.Project_Name,
+                                   Priority = item.Project.Priority
+                               }
                            };
 
-            return GetAllParentTasks().Union(allTasks).ToList();
+            return  GetAllParentTasks().Union(allTasks).ToList();
         }
 
         public IEnumerable<TaskModel> GetAllParentTasks()
@@ -38,8 +45,9 @@ namespace ProjectManager.BL
             var allTasks = from item in _dbService.GetAllParentTasks()
                            select new TaskModel
                            {
-                               ParentTaskName = item.Parent_Task,
-                               ParentTaskID = item.Parent_ID
+                               TaskID = item.Parent_ID,
+                               TaskName = item.Parent_Task,
+                               IsParentTask=true
                            };
 
             return allTasks.ToList();
@@ -86,12 +94,31 @@ namespace ProjectManager.BL
 
         public void AddUser(UserModel usr)
         {
-            _dbService.AddUser(new Usr() { Employee_ID = usr.EmployeeId, FirstName = usr.FirstName, LastName = usr.LastName });
+            _dbService.AddUser(new Usr() { Usr_ID=usr.UserId, Employee_ID = usr.EmployeeId, FirstName = usr.FirstName, LastName = usr.LastName });
         }
 
+        public void DeleteUser(UserModel usr)
+        {
+            _dbService.DeleteUser(new Usr() { Usr_ID = usr.UserId, Employee_ID = usr.EmployeeId, FirstName = usr.FirstName, LastName = usr.LastName });
+        }
         public void AddProject(ProjectModel prj)
         {
-            _dbService.AddProject(new Project() { Project_ID = prj.ProjectID, Project_Name = prj.ProjectName, StartDate = prj.StartDate, EndDate = prj.EndDate, Priority = prj.Priority, Usrs = new List<Usr> { new Usr() { Project_ID=prj.ProjectID, Usr_ID=prj.Manager.UserId, FirstName = prj.Manager.FirstName, LastName = prj.Manager.LastName, Employee_ID = prj.Manager.EmployeeId } } });
+            _dbService.AddProject(new Project()
+            {
+                Project_ID = prj.ProjectID,
+                Project_Name = prj.ProjectName,
+                StartDate = prj.StartDate,
+                EndDate = prj.EndDate,
+                Priority = prj.Priority,
+                Usrs = prj.Manager == null ? null : (new List<Usr> { new Usr()
+                { Project_ID=prj.ProjectID,
+                    Usr_ID =prj.Manager.UserId,
+                    FirstName = prj.Manager.FirstName,
+                    LastName = prj.Manager.LastName,
+                    Employee_ID = prj.Manager.EmployeeId
+                }
+                })
+            });
         }
 
         public void AddTask(TaskModel task)
@@ -101,9 +128,9 @@ namespace ProjectManager.BL
                 Task_ID = task.TaskID,
                 Task_Name = task.TaskName,
                 Parent_ID = task.ParentTaskID,
-                ParentTask = new ParentTask() { Parent_ID = task.ParentTaskID, Parent_Task = task.ParentTaskName },
+                ParentTask = (task.IsParentTask || task.ParentTaskID == null) ? null : new ParentTask() { Parent_ID = task.ParentTaskID.Value, Parent_Task = task.ParentTaskName },
                 Project_ID = task.Project.ProjectID,
-                Usrs = new List<Usr>() { new Usr() { Employee_ID = task.User.EmployeeId, FirstName = task.User.FirstName, LastName = task.User.LastName, Usr_ID = task.User.UserId, Task_ID = task.TaskID, Project_ID = task.Project.ProjectID } },
+                Usrs = task.User == null ? null : new List<Usr>() { new Usr() { Employee_ID = task.User.EmployeeId, FirstName = task.User.FirstName, LastName = task.User.LastName, Usr_ID = task.User.UserId, Task_ID = task.TaskID, Project_ID = task.Project.ProjectID } },
                 StartDate = task.StartDate,
                 EndDate = task.EndDate,
                 Priority = task.Priority,
@@ -118,8 +145,8 @@ namespace ProjectManager.BL
             {
                 TaskID = tsk.Task_ID,
                 TaskName = tsk.Task_Name,
-                ParentTaskID = tsk.ParentTask.Parent_ID,
-                ParentTaskName = tsk.ParentTask.Parent_Task,
+                ParentTaskID = tsk.ParentTask?.Parent_ID,
+                ParentTaskName = tsk.ParentTask?.Parent_Task,
                 StartDate = tsk.StartDate,
                 EndDate = tsk.EndDate,
                 Priority = tsk.Priority,
@@ -142,6 +169,27 @@ namespace ProjectManager.BL
                 };
             }
             return tskModel;
+        }
+
+        //public TaskModel GetParentTaskById(int taskId)
+        //{
+        //    DL.ParentTask tsk = _dbService.GetParentTaskById(taskId);
+        //    TaskModel tskModel = new TaskModel()
+        //    {
+        //        TaskID = tsk.Parent_ID,
+        //        TaskName = tsk.Parent_Task,               
+        //        Project = new ProjectModel()
+        //        {
+        //            ProjectID = tsk.Project.Project_ID,
+        //            ProjectName = tsk.Project.Project_Name,
+        //            Priority = tsk.Project.Priority
+        //        }
+        //    };
+        //}
+
+        public void AddParentTask(TaskModel task)
+        {
+            _dbService.AddParentTask(new ParentTask() { Parent_ID = task.TaskID, Parent_Task = task.TaskName });
         }
     }
 }

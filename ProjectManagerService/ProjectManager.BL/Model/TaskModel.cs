@@ -11,11 +11,12 @@ namespace ProjectManager.BL.Model
         public int TaskID { get; set; }
         public string TaskName { get; set; }
         public string ParentTaskName { get; set; }
-        public int ParentTaskID { get; set; }
+        public int? ParentTaskID { get; set; }
         public int? Priority { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public ProjectModel Project { get; set; }
         public UserModel User { get; set; }
+        public bool IsParentTask { get; set; }
     }
 }

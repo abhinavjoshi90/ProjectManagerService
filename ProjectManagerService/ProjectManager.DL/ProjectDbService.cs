@@ -23,6 +23,11 @@ namespace ProjectManager.DL
         {
             return _context.ParentTasks;
         }
+
+        //public ParentTask GetParentTaskById(int taskId)
+        //{
+        //    return _context.ParentTasks.Where(t => t.Parent_ID == taskId).FirstOrDefault();
+        //}
         public IQueryable<Usr> GetAllUsers()
         {
             return _context.Usrs;
@@ -34,7 +39,20 @@ namespace ProjectManager.DL
         }
         public void AddUser(Usr obj)
         {
-            _context.Usrs.Add(obj);
+            if (obj.Usr_ID > 0)
+            {
+                _context.Entry(obj).State = System.Data.Entity.EntityState.Modified;
+            }
+            else
+            {
+                _context.Usrs.Add(obj);
+            }
+            _context.SaveChanges();
+        }
+
+        public void DeleteUser(Usr obj)
+        {
+            _context.Entry(obj).State = System.Data.Entity.EntityState.Deleted;
             _context.SaveChanges();
         }
         public void AddProject(Project prj)
@@ -68,40 +86,63 @@ namespace ProjectManager.DL
 
         public void AddTask(Task task)
         {
-            if (task.Task_ID > 0)
+            if (task.Usrs?.Count > 0)
             {
+                foreach (var user in task.Usrs)
+                {
+                    _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
+            else
+            {
+                task.Usrs = null;
+            }
+            if (task.ParentTask?.Parent_ID > 0)
+            {
+                _context.Entry(task.ParentTask).State = System.Data.Entity.EntityState.Modified;
+            }
+            if (task.ParentTask?.Parent_ID == 0 && string.IsNullOrEmpty(task.ParentTask?.Parent_Task))
+            {
+                task.ParentTask = null;
+                task.Parent_ID = null;
+            }
+            if (task.Task_ID > 0)
+            {   
                 var users = GetAllUsers().Where(c => c.Project_ID == task.Project_ID && c.Task_ID == task.Task_ID).ToList();
                 foreach (var user in users)
                 {
-                    user.Project_ID = null;
-                    user.Task_ID = null;
-                    _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    var taskusr = task.Usrs.FirstOrDefault();
+                    if (taskusr.Usr_ID != user.Usr_ID)
+                    {
+                        user.Project_ID = null;
+                        user.Task_ID = null;
+                        _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    }
                 }
-
-                //var parents = GetAllParentTasks().Where(c => c.Parent_ID == task.ParentTask.Parent_ID).ToList();
-                //foreach(var prnt in parents)
-                //{
-                //    prnt.Tasks 
-                //}
+                
                 _context.Entry(task).State= System.Data.Entity.EntityState.Modified; 
             }
             else
             {
                 _context.Tasks.Add(task);
             }
-                  
-            if (task.Usrs?.Count > 0)
+          
+            _context.SaveChanges();
+        }
+
+        public void AddParentTask( ParentTask task)
+        {
+            if (task.Parent_ID > 0)
             {
-                foreach(var user in task.Usrs)
-                {
-                    _context.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                }
+                _context.Entry(task).State = System.Data.Entity.EntityState.Modified;
             }
-            if (task.ParentTask.Parent_ID > 0)
+            else
             {
-                _context.Entry(task.ParentTask).State = System.Data.Entity.EntityState.Modified;
+                _context.ParentTasks.Add(task);
             }
             _context.SaveChanges();
         }
+
+        
     }
 }

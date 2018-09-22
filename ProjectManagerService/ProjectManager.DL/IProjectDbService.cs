@@ -12,5 +12,8 @@ namespace ProjectManager.DL
         IQueryable<ParentTask> GetAllParentTasks();
         void AddTask(Task task);
         Task GetTaskById(int taskId);
+        void AddParentTask(ParentTask task);
+        void DeleteUser(Usr obj);
+        //ParentTask GetParentTaskById(int taskId)
     }
 }
