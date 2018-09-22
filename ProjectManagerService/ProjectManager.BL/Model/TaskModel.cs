@@ -18,5 +18,6 @@ namespace ProjectManager.BL.Model
         public ProjectModel Project { get; set; }
         public UserModel User { get; set; }
         public bool IsParentTask { get; set; }
+        public string Status { get; set; }
     }
 }

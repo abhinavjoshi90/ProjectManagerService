@@ -19,6 +19,9 @@ namespace ProjectManager.BL
         public IEnumerable<TaskModel> GetAllTasks()
         {
             var allTasks = from item in _dbService.GetAllTasks()
+                           join usr in _dbService.GetAllUsers()
+                            on item.Task_ID equals usr.Task_ID into ps
+                           from usritem in ps.DefaultIfEmpty()
                            select new TaskModel
                            {
                                TaskID = item.Task_ID,
@@ -29,15 +32,22 @@ namespace ProjectManager.BL
                                EndDate = item.EndDate,
                                Priority = item.Priority,
                                IsParentTask = false,
+                               Status = item.Status,
                                Project = new ProjectModel()
                                {
                                    ProjectID = item.Project.Project_ID,
                                    ProjectName = item.Project.Project_Name,
                                    Priority = item.Project.Priority
-                               }
+                               },
+                               User = usritem == null ? null : (new UserModel()
+                               {
+                                   EmployeeId = usritem.Employee_ID,
+                                   FirstName = usritem.FirstName,
+                                   LastName = usritem.LastName,
+                                   UserId = usritem.Usr_ID
+                               })
                            };
-
-            return  GetAllParentTasks().Union(allTasks).ToList();
+            return GetAllParentTasks().Union(allTasks).ToList();
         }
 
         public IEnumerable<TaskModel> GetAllParentTasks()
@@ -123,6 +133,11 @@ namespace ProjectManager.BL
 
         public void AddTask(TaskModel task)
         {
+            string _status = "";
+            if (task.EndDate <= DateTime.Now) { _status = "Completed"; }
+            else if (task.StartDate >= DateTime.Now) { _status = "Not Started"; }
+            else { _status = "In Progress"; }
+
             _dbService.AddTask(new DL.Task()
             {
                 Task_ID = task.TaskID,
@@ -134,7 +149,7 @@ namespace ProjectManager.BL
                 StartDate = task.StartDate,
                 EndDate = task.EndDate,
                 Priority = task.Priority,
-                Status = task.StartDate > DateTime.Now ? "In Progress" : "Not Started"
+                Status=_status              
             });
         }
 
@@ -150,6 +165,7 @@ namespace ProjectManager.BL
                 StartDate = tsk.StartDate,
                 EndDate = tsk.EndDate,
                 Priority = tsk.Priority,
+                Status=tsk.Status,
                 Project = new ProjectModel()
                 {
                     ProjectID = tsk.Project.Project_ID,
