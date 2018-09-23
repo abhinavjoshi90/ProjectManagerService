@@ -132,12 +132,12 @@ namespace ProjectManager.Service.Controllers
             if (task.TaskID > 0)
             {
                 _manager.AddTask(task);
-                return Ok("Task updated successfully");
+                return Ok("Task(s) updated successfully");
             }
             else
             {
                 _manager.AddTask(task);
-                return Ok("Task added successfully");
+                return Ok("Task(s) added successfully");
             }
         }
 
