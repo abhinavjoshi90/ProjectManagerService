@@ -187,22 +187,6 @@ namespace ProjectManager.BL
             return tskModel;
         }
 
-        //public TaskModel GetParentTaskById(int taskId)
-        //{
-        //    DL.ParentTask tsk = _dbService.GetParentTaskById(taskId);
-        //    TaskModel tskModel = new TaskModel()
-        //    {
-        //        TaskID = tsk.Parent_ID,
-        //        TaskName = tsk.Parent_Task,               
-        //        Project = new ProjectModel()
-        //        {
-        //            ProjectID = tsk.Project.Project_ID,
-        //            ProjectName = tsk.Project.Project_Name,
-        //            Priority = tsk.Project.Priority
-        //        }
-        //    };
-        //}
-
         public void AddParentTask(TaskModel task)
         {
             _dbService.AddParentTask(new ParentTask() { Parent_ID = task.TaskID, Parent_Task = task.TaskName });
