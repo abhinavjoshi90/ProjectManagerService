@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.Service", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.UnitTest", "ProjectManager.UnitTest\ProjectManager.UnitTest.csproj", "{E3B847FE-4D66-426F-B753-C0A8CC8AB41D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManager.NBenchTest", "ProjectManager.NBenchTest\ProjectManager.NBenchTest.csproj", "{ACD00652-457C-44D3-BD9F-14DA58F1B68D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{E3B847FE-4D66-426F-B753-C0A8CC8AB41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3B847FE-4D66-426F-B753-C0A8CC8AB41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3B847FE-4D66-426F-B753-C0A8CC8AB41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACD00652-457C-44D3-BD9F-14DA58F1B68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACD00652-457C-44D3-BD9F-14DA58F1B68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACD00652-457C-44D3-BD9F-14DA58F1B68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACD00652-457C-44D3-BD9F-14DA58F1B68D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
